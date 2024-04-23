@@ -293,37 +293,58 @@ def PaymentCallback(request):
 
         # Check if transaction state is complete
     if data["state"] == "COMPLETE":
+        account = data["account"]  # Get the account information from data
+
+        # Initialize phone and email variables with None
+        phone = None
+        email = None
+
         try:
-                # Get or create credit balance for the account
-            account = data["account"]
+            int_account = int(account)  # Try converting account to an integer
+            phone = (int_account)    # Convert the integer to a character (assuming this is intended for phone number processing)
+            print(phone)
+        except ValueError:
+            # If account is not an integer, treat it as an email
+            email = account
+            print(email)
+
+        if phone is not None:
+            # Process payments based on phone number
             try:
-               int_account= int(account)
-               phone=chr(int_account)
-            except:
-                email=account
-
-            if phone:
-                payment_instance= Payments.objects.filter(mpesa_number=phone).latest('id')
-                payment_instance.payment_status='completed'
+                payment_instance = Payments.objects.filter(mpesa_number=phone).latest('id')
+                payment_instance.payment_status = 'completed'
                 payment_instance.save()
-                user_id=payment_instance.userId
-                course_id=payment_instance.courseId
-                paid_course_instance=PaidCourse.objects.create(userId=user_id,courseId=course_id)
-                paid_course_instance.save()
-            if email:
-                payment_instance= Payments.objects.filter(email=email).latest('id')
-                payment_instance.payment_status='completed'
-                payment_instance.payment_method='card'
-                payment_instance.save()
-                user_id=payment_instance.userId
-                course_id=payment_instance.courseId
-                paid_course_instance=PaidCourse.objects.create(userId=user_id,courseId=course_id)
-                paid_course_instance.save()
-            else:
-                return JsonResponse({"message": "NO EMAIL OR PHONE."})
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+                user_id = payment_instance.userId
+                course_id = payment_instance.courseId
+
+                paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                paid_course_instance.save()
+
+            except Payments.DoesNotExist:
+                return JsonResponse({"message": "No payment found for this phone number."})
+
+        elif email is not None:
+            # Process payments based on email
+            try:
+                payment_instance = Payments.objects.filter(email=email).latest('id')
+                payment_instance.payment_status = 'completed'
+                payment_instance.payment_method = 'card'
+                payment_instance.save()
+
+                user_id = payment_instance.userId
+                course_id = payment_instance.courseId
+
+                paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                paid_course_instance.save()
+
+            except Payments.DoesNotExist:
+                return JsonResponse({"message": "No payment found for this email."})
+
+        else:
+            return JsonResponse({"message": "No email or phone provided."})
+
+        
     else:
         return JsonResponse({"message": "Transaction state is not complete."})
 
