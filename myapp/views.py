@@ -96,7 +96,9 @@ def course(request,id):
             #we have estimated 1 usd is 135 ke
             keprice=usdprice*135
             keprice=int(keprice)
-            request.session['keprice'] = id
+            print(keprice)
+            
+            request.session['keprice'] = keprice
             return render(request,"payment.html",{"usdprice":usdprice,"keprice":keprice})
     else:
         # If user_id is not in session redirect to login
@@ -215,6 +217,7 @@ def mpesa_checkout(request):
         email = MofrexUsers.objects.get(id=user_id).email
         #cost of course
         amountkes = request.session.get('keprice')
+        print(amountkes)
         courseid = request.session.get('course_id')
         #print(amount)
         if phone.startswith('0'):
@@ -319,7 +322,7 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
-                paid_course_instance.save()
+                
 
             except Payments.DoesNotExist:
                 return JsonResponse({"message": "No payment found for this phone number."})
@@ -336,7 +339,7 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
-                paid_course_instance.save()
+                
 
             except Payments.DoesNotExist:
                 return JsonResponse({"message": "No payment found for this email."})
