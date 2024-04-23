@@ -16,14 +16,14 @@ import logging
 from django.shortcuts import render
 def index(request):
     courses = Course.objects.all()
-    try:
-        user_id = request.session.get('user_id')
+    user_id = request.session.get('user_id')
+    if user_id is not None:
         paid_courses = PaidCourse.objects.filter(userId=user_id)
             #print(paid_courses.count())
         course_ids = [paid_course.courseId for paid_course in paid_courses]
         
         return render(request, 'index.html', {'courses': courses,"course_ids":course_ids})
-    except:
+    else:
         return render(request, 'index.html', {'courses': courses})
 
 '''
@@ -41,14 +41,15 @@ def about(request):
 def allcourses(request):
     # Query all courses from the Course model
     courses = Course.objects.all()
-    try:
-        user_id = request.session.get('user_id')
+    user_id = request.session.get('user_id')
+    if user_id is not None:
+        
         paid_courses = PaidCourse.objects.filter(userId=user_id)
             #print(paid_courses.count())
         course_ids = [paid_course.courseId for paid_course in paid_courses]
         
         return render(request, 'allcourses.html', {'courses': courses,"course_ids":course_ids})
-    except:
+    else:
         return redirect("/login")
 
     # Pass courses to the template for rendering
@@ -60,11 +61,8 @@ def contact(request):
 def course(request,id):
     #store course id
     request.session['course_id'] = id
-
-    try:
-
-    # Get the user ID from the session
-        user_id = request.session.get('user_id')
+    user_id = request.session.get('user_id')
+    if user_id is not None:
 
     
         try:
@@ -100,9 +98,9 @@ def course(request,id):
             keprice=int(keprice)
             request.session['keprice'] = id
             return render(request,"payment.html",{"usdprice":usdprice,"keprice":keprice})
-    except:
+    else:
         # If user_id is not in session redirect to login
-        return redirect('/login') 
+        return redirect('/login')
 
 def forgot_password(request):
     return render(request, 'forgot_password.html')
@@ -119,15 +117,15 @@ def user_register(request):
 def watchlist(request):
     print("watchlist called")
     # Get the user_id from the session
-    try:
-        #print("hello")
-        user_id = request.session.get('user_id')
+    user_id = request.session.get('user_id')
+    if user_id is not None:
+        
         #print(user_id)
 
         if user_id:
             # Retrieve all course_ids associated with the current user_id from PaidCourse
             paid_courses = PaidCourse.objects.filter(userId=user_id)
-            print(paid_courses.count())
+            #print(paid_courses.count())
             course_ids = [paid_course.courseId for paid_course in paid_courses]
 
             # Retrieve Course objects corresponding to the course_ids
@@ -139,7 +137,7 @@ def watchlist(request):
         else:
             # Handle case where user_id is not found in the session
             return render(request, 'watchlist.html', {'courses': []})
-    except:
+    else:
         return redirect('/login')
 
 def gallery(request):
@@ -206,9 +204,10 @@ def auth_login(request):
     return redirect('index')
 
 def mpesa_checkout(request):
-    try:
-        #getting user id from session
-        user_id=request.session.get('user_id')
+     #getting user id from session
+    user_id=request.session.get('user_id')
+    if user_id is not None:
+        
 
         #getting saf number from form
         phone = request.POST.get('phone', False)
@@ -242,15 +241,16 @@ def mpesa_checkout(request):
         except Exception as e:
                 # Return an error if there's an exception
             return render(request,"index.html",{"error": "try again later "})
-    except:
+    else:
         return redirect('/login')
 
 
 
 def CardPayments(request):
-    try:
-        #getting user id from session
-        user_id=request.session.get('user_id')
+    #getting user id from session
+    user_id=request.session.get('user_id')
+    if user_id is not None:
+       
 
         #getting saf number from form
         #phone = request.POST.get('phone', False)
@@ -277,7 +277,7 @@ def CardPayments(request):
 
         except:
             return redirect("/index")
-    except:
+    else:
         return redirect("/login")
     
 from django.views.decorators.csrf import csrf_exempt
@@ -328,25 +328,29 @@ def PaymentCallback(request):
         return JsonResponse({"message": "Transaction state is not complete."})
 
 def user_profile(request):
-    
     print("starting")
     print("getting id")
     user_id=request.session.get('user_id')
     print(user_id)
-    user_logged=MofrexUsers.objects.get(id=user_id)
-    email = user_logged.email
-    password = user_logged.password
-    username = user_logged.username
-    phone = user_logged.phone
-    print(phone)
-    user_data = {
-            'email': email,
-            'password': password,
-            'username': username,
-            'phone': phone
-        }
+    if user_id is not None:
     
-    return render(request, "profile.html", {'user_data': user_data})
+       
+        user_logged=MofrexUsers.objects.get(id=user_id)
+        email = user_logged.email
+        password = user_logged.password
+        username = user_logged.username
+        phone = user_logged.phone
+        print(phone)
+        user_data = {
+                'email': email,
+                'password': password,
+                'username': username,
+                'phone': phone
+            }
+        
+        return render(request, "profile.html", {'user_data': user_data})
+    else:
+        return redirect("/login")
     
     
 def reset_password(request):
