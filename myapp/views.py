@@ -322,6 +322,7 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                return JsonResponse({'message':'mpesa payment complete'})
                 
 
             except Payments.DoesNotExist:
@@ -339,6 +340,7 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                return JsonResponse({'message':'mpesa payment complete'})
                 
 
             except Payments.DoesNotExist:
