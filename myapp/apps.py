@@ -8,5 +8,4 @@ class MyappConfig(AppConfig):
     name = 'myapp'
 
 
-    def ready(self):
-        import myapp.signals
+   
