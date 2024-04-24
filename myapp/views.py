@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render,get_object_or_404,redirect
 import requests
-from myapp.models import Course,PaidCourse,MofrexUsers,Payments,Questions
+from myapp.models import Course,PaidCourse,MofreyfxUsers,Payments,Questions
 from intasend import APIService
 from django.http import HttpResponse,JsonResponse
 import json
@@ -164,13 +164,13 @@ def create_account(request):
         return render(request, "register.html", {"message": message})
 
         # Check if user already exists
-    if MofrexUsers.objects.filter(email=email).exists():
+    if MofreyfxUsers.objects.filter(email=email).exists():
         
         message="User with this email already exists.."
         return render(request, "register.html", {"message": message})
 
         # Create user
-    user = MofrexUsers.objects.create(email=email, password=password1,phone=phone,username=username)
+    user = MofreyfxUsers.objects.create(email=email, password=password1,phone=phone,username=username)
     try:
         
         subject = 'Thank you'
@@ -204,8 +204,8 @@ def auth_login(request):
 
     try:
             # Check if user exists
-        user = MofrexUsers.objects.get(email=email,password=password)
-    except MofrexUsers.DoesNotExist:
+        user = MofreyfxUsers.objects.get(email=email,password=password)
+    except MofreyfxUsers.DoesNotExist:
         
         message= "User does not exist.You need to sign up please."
         return render(request, "login.html", {"message": message})
@@ -230,7 +230,7 @@ def mpesa_checkout(request):
         #getting saf number from form
         phone = request.POST.get('phone', False)
         #email of the user
-        email = MofrexUsers.objects.get(id=user_id).email
+        email = MofreyfxUsers.objects.get(id=user_id).email
         #cost of course
         amountkes = request.session.get('keprice')
         print(amountkes)
@@ -274,7 +274,7 @@ def CardPayments(request):
         #getting saf number from form
         #phone = request.POST.get('phone', False)
         #email of the user
-        email = MofrexUsers.objects.get(id=user_id).email
+        email = MofreyfxUsers.objects.get(id=user_id).email
         #cost of course
         amountusd = request.session.get('usdprice')
         courseid = request.session.get('course_id')
@@ -377,7 +377,7 @@ def user_profile(request):
     if user_id is not None:
     
        
-        user_logged=MofrexUsers.objects.get(id=user_id)
+        user_logged=MofreyfxUsers.objects.get(id=user_id)
         email = user_logged.email
         password = user_logged.password
         username = user_logged.username
@@ -400,7 +400,7 @@ def reset_password(request):
     print(email)
     try:
         
-        password=MofrexUsers.objects.get(email=email).password
+        password=MofreyfxUsers.objects.get(email=email).password
         subject = 'Your password'
         message = '''Your password is {}.
         You can login now to Mofrey Markets.
@@ -419,9 +419,7 @@ def reset_password(request):
 
 
 
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from .models import Questions
+
 
 def submit_quiz(request):
     if request.method == 'POST':
@@ -489,7 +487,10 @@ def submit_quiz(request):
 
 
 def logout(request):
-    del request.session['user_id']
-
-    return redirect("/index")
+    user_id=request.session.get('user_id')
+    if user_id is  not None:
+        del request.session['user_id']
+        return redirect("/index")
+    else:
+        return redirect("/index")
   

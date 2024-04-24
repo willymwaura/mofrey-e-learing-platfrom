@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 #users model
-class MofrexUsers (models.Model):
+class MofreyfxUsers (models.Model):
     email=models.EmailField()
     password=models.CharField(max_length=10)
     username=models.CharField(max_length=20,default='username')
