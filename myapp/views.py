@@ -417,50 +417,76 @@ def reset_password(request):
         return render(request,"forgot_password.html",{"message":message})
     
 
+
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import Questions
+
 def submit_quiz(request):
     if request.method == 'POST':
+        # Initialize a list to store question responses
+        question_responses = []
+
+        # Iterate over the submitted POST data to capture question IDs and selected choices
+        for key in request.POST:
+            if key.startswith('question_') and key.endswith('_choice'):
+                question_id = key.split('_')[1]  # Extract the question ID from the key
+                selected_choice = request.POST[key]  # Get the selected choice ID
+
+                # Append the question ID and selected choice ID as a tuple to question_responses
+                question_responses.append((question_id, selected_choice))
+
+        # Retrieve the IDs of questions that were part of the quiz
+        question_ids = [question_id for question_id, selected_choice in question_responses]
+
+        # Fetch only the relevant questions from the database based on the question IDs
+        relevant_questions = Questions.objects.filter(id__in=question_ids)
+
+        # Process each question response and calculate the score
         score = 0
-        total_questions = len(request.POST) // 2  # Each question has 2 form inputs (choice and answer)
-        answer_details = []  # List to store details about each question's answer
+        total_questions = len(question_responses)  # Total number of questions based on responses
 
-        for i in range(1, total_questions + 1):
-            question_id = request.POST.get(f'question_{i}_answer')
-            selected_choice = request.POST.get(f'question_{i}_choice')
+        answer_details = []
 
-            if question_id and selected_choice:
-                question = Questions.objects.get(id=question_id)
-                correct_answer_index = question.correct_answer - 1  # Convert to zero-based index
-                correct_choice_text = getattr(question, f'choice{question.correct_answer}')
+        for question_id, selected_choice in question_responses:
+            question = relevant_questions.get(id=question_id)
 
-                if selected_choice == str(question.correct_answer):
-                    score += 1
+            # Determine if the selected choice is correct
+            if selected_choice == str(question.correct_answer):
+                score += 1
 
-                # Store question details and correct choice text in answer_details list
-                answer_details.append({
-                    'question_text': question.question_text,
-                    'selected_choice': selected_choice,
-                    'correct_choice': correct_choice_text
-                })
-        percentage=int((score/total_questions)*100)
-        failed_question=total_questions-score
+            # Retrieve the text of the correct choice
+            correct_choice_text = getattr(question, f'choice{question.correct_answer}')
+
+            # Append question details to answer_details list
+            answer_details.append({
+                'question_text': question.question_text,
+                'selected_choice': selected_choice,
+                'correct_choice': correct_choice_text
+            })
+
+        # Calculate percentage and failed questions
+        percentage = int((score / total_questions) * 100)
+        failed_questions = total_questions - score
+
+        # Prepare response data including questions and quiz results
         response_data = {
             'score': score,
             'total_questions': total_questions,
-            'answer_details': answer_details , # Include answer details in the response
-            'percentage':percentage,
-            'failed_question':failed_question
+            'percentage': percentage,
+            'failed_questions': failed_questions,
+            'answer_details': answer_details
         }
-        '''
-        # Print every question with the correct answer text
-        for detail in answer_details:
-            print(f"Question: {detail['question_text']}")
-            print(f"Correct Answer: {detail['correct_choice']}")
-            print()  # Print a blank line for better readability
-        print(percentage)'''
 
-        return render(request,"results.html",{'data':response_data})
+        # Render results.html with response_data
+        return render(request, "results.html", {'data': response_data})
 
+    # Handle other HTTP methods (e.g., GET) gracefully
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
 
 def logout(request):
     del request.session['user_id']
