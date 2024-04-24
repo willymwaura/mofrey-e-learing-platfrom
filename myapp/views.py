@@ -171,10 +171,26 @@ def create_account(request):
 
         # Create user
     user = MofrexUsers.objects.create(email=email, password=password1,phone=phone,username=username)
+    try:
+        
+        subject = 'Thank you'
+        message = '''Thank you for signing up,
+            Your Account is now active,
+            To login, use:
+            https://mofrey.up.railway.app.'''
+  
+        from_email = settings.EMAIL_HOST_USER   
+        recipient_list = [email]
+        print("sending email")
+        send_mail(subject, message, from_email, recipient_list)
+        return redirect("/index")
+    except Exception as e:
+        logging.error(f"Failed to send email. Error message: {str(e)}")
+        return redirect("/register")
     
 
         # Respond with success message
-    return render(request, "login.html")
+    
 
 def auth_login(request):
     email = request.POST.get('email',False)
@@ -385,8 +401,10 @@ def reset_password(request):
     try:
         
         password=MofrexUsers.objects.get(email=email).password
-        subject = 'your password'
-        message = "your password is" + password + 'you can login now to mofrey markets.'   
+        subject = 'Your password'
+        message = '''Your password is {}.
+        You can login now to Mofrey Markets.
+        URL: https://mofrey.up.railway.app.'''.format(password) 
         from_email = settings.EMAIL_HOST_USER   
         recipient_list = [email]
         print("sending email")
@@ -440,6 +458,8 @@ def submit_quiz(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-    
+def logout(request):
+    del request.session['user_id']
 
+    return redirect("/index")
   

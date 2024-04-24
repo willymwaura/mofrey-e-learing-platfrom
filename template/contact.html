@@ -62,6 +62,7 @@
             <a href="/watchlist" class="nav-item nav-link">Bought courses</a>
             <a href=" /profile" class="nav-item nav-link">Profile</a>
         </div>
+        {% if not user_authenticated %}
         
         <!-- Login and Register Icons with Text -->
         <div class="d-flex align-items-center">
@@ -72,6 +73,15 @@
                 <i class="fa fa-user-plus"></i> Register
             </a>
         </div>
+        {% else %}
+        <div class="d-flex align-items-center">
+           
+            <a href="/logout" class="nav-link">
+                <i class="fa fa-user-plus"></i> Logout
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 </nav>
 <!-- Navbar End -->

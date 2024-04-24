@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+               'myapp.context_processor.user_authenticated',
             ],
         },
     },
@@ -135,6 +136,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Set session timeout in seconds (e.g., 30 minutes)
+SESSION_COOKIE_AGE = 3600 # 30 minutes (30 * 60 seconds)
+
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -143,3 +148,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'remotejobssoftwarecompany@gmail.com'
 EMAIL_HOST_PASSWORD="chzdtgtxfgkfjild"
+
+
+
+
+# Set session cookie secure flag (recommended for production over HTTPS)
+SESSION_COOKIE_SECURE = True

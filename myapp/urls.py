@@ -21,6 +21,7 @@ urlpatterns = [
       path('paymentProcessing',views.PaymentCallback,name='paymentProcessing'),
       path('profile',views.user_profile,name='profile'),
       path('reset_password',views.reset_password,name="reset_password"),
-      path('submit_quiz',views.submit_quiz,name='submit_quiz')
+      path('submit_quiz',views.submit_quiz,name='submit_quiz'),
+      path('logout',views.logout,name='logout'),
 ]
 

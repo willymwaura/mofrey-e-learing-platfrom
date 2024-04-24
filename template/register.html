@@ -81,7 +81,7 @@
     <!-- Navbar Start -->
  
    <!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+   <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Esther Mofrey FX</h2>
     </a>
@@ -98,6 +98,7 @@
             <a href="/watchlist" class="nav-item nav-link">Bought courses</a>
             <a href=" /profile" class="nav-item nav-link">Profile</a>
         </div>
+        {% if not user_authenticated %}
         
         <!-- Login and Register Icons with Text -->
         <div class="d-flex align-items-center">
@@ -108,6 +109,15 @@
                 <i class="fa fa-user-plus"></i> Register
             </a>
         </div>
+        {% else %}
+        <div class="d-flex align-items-center">
+           
+            <a href="/logout" class="nav-link">
+                <i class="fa fa-user-plus"></i> Logout
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 </nav>
     <!-- Navbar End -->
@@ -119,14 +129,14 @@
             <form action="/create_account" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input type="username" name="username"  required>
+                    <input type="username" name="username" placeholder="username"  required>
                 </div>
                
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" name="phone" placeholder="0712345678" required>
+                    <input type="number" name="phone" placeholder="0712345678" required>
                 </div>
                
                 <div class="form-group">
@@ -144,7 +154,7 @@
                 </div>
             </form>
             
-            <p class="terms-text">By clicking Register, you agree to the privacy <a href="terms.html">Terms and Conditions</a>  of Mofrey Technologies.</p>
+
         </div>
        
     </div>
