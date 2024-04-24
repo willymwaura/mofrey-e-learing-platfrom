@@ -111,7 +111,12 @@ def user_login(request):
     return render(request, 'login.html')
 
 def payment(request):
-    return render(request, 'payment.html')
+    user_id=request.session.get('user_id')
+    if user_id is not None:
+
+        return render(request, 'payment.html')
+    else:
+        return redirect("/login")
 
 def user_register(request):
     return render(request, 'register.html')
