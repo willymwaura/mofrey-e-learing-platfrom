@@ -404,12 +404,12 @@ def reset_password(request):
         subject = 'Your password'
         message = '''Your password is {}.
         You can login now to Mofrey Markets.
-        URL: https://mofrey.up.railway.app.'''.format(password) 
+        URL: https://mofrey.up.railway.app/login.'''.format(password) 
         from_email = settings.EMAIL_HOST_USER   
         recipient_list = [email]
         print("sending email")
         send_mail(subject, message, from_email, recipient_list)
-        message="your passord has been sent to your email"
+        message="your password has been sent to your email"
         return render(request,"forgot_password.html",{"message":message})
     except Exception as e:
         logging.error(f"Failed to send email. Error message: {str(e)}")
@@ -441,20 +441,24 @@ def submit_quiz(request):
                     'selected_choice': selected_choice,
                     'correct_choice': correct_choice_text
                 })
-
+        percentage=int((score/total_questions)*100)
+        failed_question=total_questions-score
         response_data = {
             'score': score,
             'total_questions': total_questions,
-            'answer_details': answer_details  # Include answer details in the response
+            'answer_details': answer_details , # Include answer details in the response
+            'percentage':percentage,
+            'failed_question':failed_question
         }
-
+        '''
         # Print every question with the correct answer text
         for detail in answer_details:
             print(f"Question: {detail['question_text']}")
             print(f"Correct Answer: {detail['correct_choice']}")
             print()  # Print a blank line for better readability
+        print(percentage)'''
 
-        return JsonResponse(response_data)
+        return render(request,"results.html",{'data':response_data})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 

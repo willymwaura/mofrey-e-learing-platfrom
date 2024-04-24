@@ -11,10 +11,7 @@
 
     <!-- Favicon -->
     <link rel="icon" href="{% static 'img/favicon.ico' %}">
-    <link href="https://vjs.zencdn.net/7.16.4/video-js.css" rel="stylesheet">
 
-<!-- Include Video.js JavaScript -->
-<script src="https://vjs.zencdn.net/7.16.4/video.min.js"></script>
 
 
     <!-- Google Web Fonts -->
@@ -58,7 +55,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href=" " class="nav-item nav-link active">Home</a>
+            <a href=" /index" class="nav-item nav-link active">Home</a>
             <a href="/about" class="nav-item nav-link">About</a>
             <a href="/allcourses" class="nav-item nav-link">Courses</a>
             <a href="/gallery" class="nav-item nav-link">Gallery</a>
@@ -201,6 +198,9 @@
                 flex-basis: auto;
             }
         }
+        
+
+
     </style>
 </head>
 
@@ -216,7 +216,7 @@
         <section class="video-section">
             <h2>{{ course.name }}</h2>
             <div class="video-container">
-                <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="auto" data-setup="{}">
+                <video id="myVideo" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="auto" >
                     <!-- Specify S3 video URL as the source -->
                     <source src="{{ course.video_url }}" type="video/mp4">
                     <!-- Fallback for older browsers -->
@@ -233,28 +233,28 @@
             </p>
 
             <!-- Quiz Section -->
+                        {% if questions_with_choices %}
             <div class="quiz-section">
                 <h2>Quiz</h2>
                 <form action="/submit_quiz" method="post">
-                   {%csrf_token%}
+                    {% csrf_token %}
                     {% for entry in questions_with_choices %}
                     <div class="question">
                         <p>{{ entry.question.question_text }}</p>
-                        <input type="hidden" name="question_{{ entry.question.id }}_answer" value="{{entry.question.correct_answer}}">
+                        <input type="hidden" name="question_{{ entry.question.id }}_answer" value="{{ entry.question.correct_answer }}">
                         {% for choice in entry.choices %}
-                        
-
                         <label>
                             <input type="radio" name="question_{{ entry.question.id }}_choice" value="{{ forloop.counter }}">
-                        {{ choice }}
+                            {{ choice }}
                         </label>
                         {% endfor %}
                     </div>
                     {% endfor %}
-
                     <button type="submit">Submit Answers</button>
                 </form>
             </div>
+            {% endif %}
+
         </section>
     </div>
 
@@ -266,29 +266,18 @@
     <script src="{% static 'lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script>
-        // Wait for the DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Video.js player with the specified video element
-            var player = videojs('my-video', {
-                controlBar: {
-                    // Exclude specific control components from the control bar
-                    children: [
-                        'playToggle',
-                        'volumePanel',
-                        'currentTimeDisplay',
-                        'timeDivider',
-                        'durationDisplay',
-                        'progressControl',
-                        'remainingTimeDisplay',
-                        'fullscreenToggle'
-                    ]
-                },
-                // Disable playback rate menu button
-                playbackRates: [] // Empty array disables the playback rate menu button
-            });
+    
+     <script>
+       
+        document.querySelector('video').setAttribute("controlslist", "nodownload");
+        var video = document.getElementById('myVideo');
+
+        video.addEventListener('contextmenu', function(event) {
+            event.preventDefault(); // Prevent the default right-click behavior
         });
     </script>
+    
+    
 
 
     <!-- Template Javascript -->
