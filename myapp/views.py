@@ -290,7 +290,7 @@ def CardPayments(request):
             publishable_key = "ISPubKey_live_ee33ed45-3f7e-46ce-a6a4-d91fae6de1de"
             service = APIService(token="ISSecretKey_live_0bcbeaa2-f210-476b-9bfa-28fae2ee5c0a", publishable_key=publishable_key, test=False)
 
-            response = service.collect.checkout(phone_number=254112100378,email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
+            response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
             url=response.get("url")
             return redirect(url)
 
