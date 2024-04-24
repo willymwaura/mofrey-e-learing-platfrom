@@ -23,7 +23,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="icon" href="/static/img/Mofrey-Markets.jpg">
+    <link rel="icon" href="{% static 'img/Mofrey-Markets.jpg' %}">
     
     <!-- Inline Styles for Login Form -->
     <style>
@@ -93,7 +93,7 @@
 <!-- Navbar Start -->
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <img src="/static/img/logofx.png" alt="Mofrey FX Logo" style="height: auto; max-height: 80px; margin-right: 10px;">
+        <img src="{% static 'img/logofx.png' %}" alt="Mofrey FX Logo" style="height: auto; max-height: 80px; margin-right: 10px;">
         <h2 class="m-0 text-primary">Mofrey FX Academy</h2>
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">

@@ -30,7 +30,7 @@
    <!-- Template Stylesheet -->
    <link href="{% static 'css/style.css' %}" rel="stylesheet">
    <link href="{% static 'img/LOG.jpg' %}" rel="stylesheet">
-   <link rel="icon" href="/static/img/Mofrey-Markets.jpg">
+   <link rel="icon" href="{% static 'img/Mofrey-Markets.jpg' %}">
 </head>
 
 <body>
@@ -49,7 +49,7 @@
    <!-- Navbar Start -->
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <img src="/static/img/logofx.png" alt="Mofrey FX Logo" style="height: auto; max-height: 80px; margin-right: 10px;">
+        <img src="{% static 'img/logofx.png' %}" alt="Mofrey FX Logo" style="height: auto; max-height: 80px; margin-right: 10px;">
         <h2 class="m-0 text-primary">Mofrey FX Academy</h2>
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -239,7 +239,7 @@
                 <h4 class="text-white mb-3">Mofrey FX Academy</h4>
                 <div class="row g-2 pt-2">
                     <div class="col-12">
-                        <img class="img-fluid bg-light p-1" src="/static/img/Mofrey-Markets-removebg-preview.png" alt="Website Logo"  style="width: 200px; height: 170px;">
+                        <img class="img-fluid bg-light p-1" src="{% static 'img/Mofrey-Markets-removebg-preview.png' %}" alt="Website Logo" style="width: 200px; height: 170px;">
                     </div>
                 </div>
             </div>
