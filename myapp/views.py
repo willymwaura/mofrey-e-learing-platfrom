@@ -115,7 +115,7 @@ def payment(request,id):
     user_id=request.session.get('user_id')
     if user_id is not None:
 
-        usdprice=Course.objects.get(id=id).price
+        usdprice=Course.objects.get(id=user_id).price
         request.session['usdprice'] = usdprice
             #print(usdprice)
             #we have estimated 1 usd is 135 ke
@@ -534,7 +534,9 @@ def logout(request):
         return redirect("/index")
     else:
         return redirect("/index")
+
     
 def terms(request):
     return render (request,"terms.html")
   
+
