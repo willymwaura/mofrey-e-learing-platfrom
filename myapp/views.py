@@ -276,9 +276,9 @@ def mpesa_checkout(request):
             subject = f"Thank you for buying {course_bought.name}"
         
             # Construct the message body with the course link
-            message = f'''To view the course, click the link below:
+            message = f'''To view your purchased   courses, click the link below:
             
-    https://mofrey.up.railway.app/course/{course_bought.id}/'''
+    https://mofrey.up.railway.app/allcourses'''
     
             from_email = settings.EMAIL_HOST_USER   
             recipient_list = [email]
@@ -327,9 +327,9 @@ def CardPayments(request):
             subject = f"Thank you for purchasing {course_bought.name}"
         
             # Construct the message body with the course link
-            message = f'''To view the course, click the link below:
-            
-    https://mofrey.up.railway.app/course/{course_bought.id}/'''
+            message = f'''To view your purchased   courses, click the link below:
+                
+        https://mofrey.up.railway.app/allcourses/'''
     
             from_email = settings.EMAIL_HOST_USER   
             recipient_list = [email]
