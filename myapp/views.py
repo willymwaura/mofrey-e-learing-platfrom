@@ -68,7 +68,9 @@ def course(request,id):
     
         try:
             # Check if the user has paid for the specified course
-            paid_course = PaidCourse.objects.get(userId=user_id, courseId=id)
+            paid_courses = PaidCourse.objects.filter(userId=user_id, courseId=id).order_by('-date')  
+            if paid_courses.exists():
+                paid_course = paid_courses.last()
 
             # If the user has paid, retrieve the course details
             course = Course.objects.get(id=paid_course.courseId)
