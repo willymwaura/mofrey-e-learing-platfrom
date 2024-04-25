@@ -87,7 +87,9 @@ def course(request,id):
                     'questions_with_choices': questions_with_choices,
                     'course':course
                 }
-            return render(request, 'course.html', context)
+                return render(request, 'course.html', context)
+            else:
+                return render("/index")
 
 
             
