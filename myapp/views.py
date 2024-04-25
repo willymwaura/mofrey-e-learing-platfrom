@@ -77,16 +77,16 @@ def course(request,id):
                 questions = Questions.objects.filter(course=id)
                 # Create a list to store each question with its choices
                 questions_with_choices = []
-            for question in questions:
-                questions_with_choices.append({
-                    'question': question,
-                    'choices': question.get_choices()
-                })
+                for question in questions:
+                    questions_with_choices.append({
+                        'question': question,
+                        'choices': question.get_choices()
+                    })
 
-            context = {
-                'questions_with_choices': questions_with_choices,
-                'course':course
-            }
+                context = {
+                    'questions_with_choices': questions_with_choices,
+                    'course':course
+                }
             return render(request, 'course.html', context)
 
 
