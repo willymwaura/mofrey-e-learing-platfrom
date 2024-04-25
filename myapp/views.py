@@ -89,7 +89,7 @@ def course(request,id):
                 }
                 return render(request, 'course.html', context)
             else:
-                return render("/index")
+                return redirect("/index")
 
 
             
