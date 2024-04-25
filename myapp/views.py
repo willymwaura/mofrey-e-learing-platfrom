@@ -114,7 +114,16 @@ def payment(request):
     user_id=request.session.get('user_id')
     if user_id is not None:
 
-        return render(request, 'payment.html')
+        usdprice=Course.objects.get(id=id).price
+        request.session['usdprice'] = usdprice
+            #print(usdprice)
+            #we have estimated 1 usd is 135 ke
+        keprice=usdprice*135
+        keprice=int(keprice)
+        print(keprice)
+            
+        request.session['keprice'] = keprice
+        return render(request,"payment.html",{"usdprice":usdprice,"keprice":keprice})
     else:
         return redirect("/login")
 
