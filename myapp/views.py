@@ -113,6 +113,8 @@ def user_login(request):
 
 def payment(request,id):
     user_id=request.session.get('user_id')
+    request.session['course_id'] = id
+
     if user_id is not None:
 
         usdprice=Course.objects.get(id=id).price
