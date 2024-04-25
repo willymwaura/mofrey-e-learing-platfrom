@@ -68,28 +68,27 @@ def course(request,id):
     
         try:
             # Check if the user has paid for the specified course
-            paid_courses = PaidCourse.objects.filter(userId=user_id, courseId=id).order_by('-date')  
-            if paid_courses.exists():
-                paid_course = paid_courses.last()
+            print("start")
+            paid_course = PaidCourse.objects.get(userId=user_id, courseId=id) 
+            
 
             # If the user has paid, retrieve the course details
-                course = Course.objects.get(id=paid_course.courseId)
-                questions = Questions.objects.filter(course=id)
+            course = Course.objects.get(id=paid_course.courseId)
+            questions = Questions.objects.filter(course=id)
                 # Create a list to store each question with its choices
-                questions_with_choices = []
-                for question in questions:
+            questions_with_choices = []
+            for question in questions:
                     questions_with_choices.append({
                         'question': question,
                         'choices': question.get_choices()
                     })
 
-                context = {
+            context = {
                     'questions_with_choices': questions_with_choices,
                     'course':course
                 }
-                return render(request, 'course.html', context)
-            else:
-                return redirect("/index")
+            return render(request, 'course.html', context)
+          
 
 
             
