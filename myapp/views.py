@@ -200,7 +200,7 @@ def create_account(request):
         recipient_list = [email]
         print("sending email")
         send_mail(subject, message, from_email, recipient_list)
-        return redirect("/index")
+        return redirect("/login")
     except Exception as e:
         logging.error(f"Failed to send email. Error message: {str(e)}")
         return redirect("/register")
