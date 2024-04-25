@@ -16,6 +16,7 @@ import logging
 from django.shortcuts import render
 def index(request):
     courses = Course.objects.all()
+    courses = courses[:4]
     user_id = request.session.get('user_id')
     if user_id is not None:
         paid_courses = PaidCourse.objects.filter(userId=user_id)
@@ -110,7 +111,7 @@ def forgot_password(request):
 def user_login(request):
     return render(request, 'login.html')
 
-def payment(request):
+def payment(request,id):
     user_id=request.session.get('user_id')
     if user_id is not None:
 
@@ -267,6 +268,20 @@ def mpesa_checkout(request):
                 # Trigger M-Pesa STK Push
             response = service.collect.mpesa_stk_push(phone_number=phone, email=email, amount=amountkes, narrative="mpesa payment")
             print(response)
+            #pass the course details in email
+            
+            course_bought=Course.objects.get(id=courseid)
+            subject = f"Thank you for buying {course_bought.name}"
+        
+            # Construct the message body with the course link
+            message = f'''To view the course, click the link below:
+            
+    https://mofrey.up.railway.app/course/{course_bought.id}/'''
+    
+            from_email = settings.EMAIL_HOST_USER   
+            recipient_list = [email]
+            print("sending email")
+            send_mail(subject, message, from_email, recipient_list)
 
                 # Return the response from the M-Pesa STK Push
             return render(request,"loading.html")
@@ -306,6 +321,18 @@ def CardPayments(request):
 
             response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
             url=response.get("url")
+            course_bought=Course.objects.get(id=courseid)
+            subject = f"Thank you for purchasing {course_bought.name}"
+        
+            # Construct the message body with the course link
+            message = f'''To view the course, click the link below:
+            
+    https://mofrey.up.railway.app/course/{course_bought.id}/'''
+    
+            from_email = settings.EMAIL_HOST_USER   
+            recipient_list = [email]
+            print("sending email")
+            send_mail(subject, message, from_email, recipient_list)
             return redirect(url)
 
         except:
@@ -507,4 +534,7 @@ def logout(request):
         return redirect("/index")
     else:
         return redirect("/index")
+    
+def terms(request):
+    return render (request,"terms.html")
   

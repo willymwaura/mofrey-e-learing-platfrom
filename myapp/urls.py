@@ -10,7 +10,7 @@ urlpatterns = [
     path('course/<int:id>', views.course, name='course'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('login/', views.user_login, name='login'),
-    path('payment/', views.payment, name='payment'),
+    path('payment/<int:id>', views.payment, name='payment'),
     path('register/', views.user_register, name='register'),
     path('watchlist/', views.watchlist, name='watchlist'),
     path('gallery/', views.gallery, name='gallery'),
@@ -23,5 +23,6 @@ urlpatterns = [
       path('reset_password',views.reset_password,name="reset_password"),
       path('submit_quiz',views.submit_quiz,name='submit_quiz'),
       path('logout',views.logout,name='logout'),
+      path("terms",views.terms,name="terms"),
 ]
 
