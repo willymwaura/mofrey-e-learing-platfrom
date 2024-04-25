@@ -276,18 +276,7 @@ def mpesa_checkout(request):
             print(response)
             #pass the course details in email
             
-            course_bought=Course.objects.get(id=courseid)
-            subject = f"Thank you for buying {course_bought.name}"
-        
-            # Construct the message body with the course link
-            message = f'''To view your purchased   courses, click the link below:
             
-    https://mofrey.up.railway.app/allcourses'''
-    
-            from_email = settings.EMAIL_HOST_USER   
-            recipient_list = [email]
-            print("sending email")
-            send_mail(subject, message, from_email, recipient_list)
 
                 # Return the response from the M-Pesa STK Push
             return render(request,"loading.html")
@@ -327,18 +316,7 @@ def CardPayments(request):
 
             response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
             url=response.get("url")
-            course_bought=Course.objects.get(id=courseid)
-            subject = f"Thank you for purchasing {course_bought.name}"
-        
-            # Construct the message body with the course link
-            message = f'''To view your purchased   courses, click the link below:
-                
-        https://mofrey.up.railway.app/allcourses/'''
-    
-            from_email = settings.EMAIL_HOST_USER   
-            recipient_list = [email]
-            print("sending email")
-            send_mail(subject, message, from_email, recipient_list)
+            
             return redirect(url)
 
         except:
@@ -385,6 +363,18 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                course_bought=Course.objects.get(id=course_id)
+                subject = f"Thank you for buying {course_bought.name}"
+            
+                # Construct the message body with the course link
+                message = f'''To view your purchased   courses, click the link below:
+                
+        https://mofrey.up.railway.app/allcourses'''
+        
+                from_email = settings.EMAIL_HOST_USER   
+                recipient_list = [email]
+                print("sending email")
+                send_mail(subject, message, from_email, recipient_list)
                 return JsonResponse({'message':'mpesa payment complete'})
                 
 
@@ -403,6 +393,18 @@ def PaymentCallback(request):
                 course_id = payment_instance.courseId
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
+                course_bought=Course.objects.get(id=course_id)
+                subject = f"Thank you for purchasing {course_bought.name}"
+            
+                # Construct the message body with the course link
+                message = f'''To view your purchased   courses, click the link below:
+                    
+            https://mofrey.up.railway.app/allcourses/'''
+        
+                from_email = settings.EMAIL_HOST_USER   
+                recipient_list = [email]
+                print("sending email")
+                send_mail(subject, message, from_email, recipient_list)
                 return JsonResponse({'message':'mpesa payment complete'})
                 
 
