@@ -273,7 +273,7 @@ def mpesa_checkout(request):
                 # Trigger M-Pesa STK Push
             response = service.collect.mpesa_stk_push(phone_number=phone, email=email, amount=amountkes, narrative="mpesa payment")
             print(response)
-            #pass the course details in email
+            
             
             
 
@@ -363,6 +363,7 @@ def PaymentCallback(request):
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
                 course_bought=Course.objects.get(id=course_id)
+                email=MofreyfxUsers.objects.get(id=user_id).email
                 subject = f"Thank you for buying {course_bought.name}"
             
                 # Construct the message body with the course link
