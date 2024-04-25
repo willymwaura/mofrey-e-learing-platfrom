@@ -221,6 +221,12 @@
             .video-section, .text-quiz-section {
                 flex-basis: auto;
             }
+            .video-container{
+                display: flex;
+
+                justify-content: center;
+                align-items: center;
+            }
         }
         
 
@@ -238,7 +244,7 @@
     <div class="course-container">
         <!-- Video Section -->
         <section class="video-section">
-            <h2>{{ course.name }}</h2>
+            
             <div class="video-container">
                 <video id="myVideo" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="auto" >
                     <!-- Specify S3 video URL as the source -->
