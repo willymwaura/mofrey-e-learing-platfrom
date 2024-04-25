@@ -33,6 +33,20 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
     <link rel="icon" href="{% static 'img/Mofrey-Markets.jpg' %}">
+    <style>
+        /* Break "Mofrey FX Academy" into two lines on small screens */
+        @media (max-width: 576px) {
+            .navbar-brand h2 {
+                white-space: normal; /* Allow text to wrap onto multiple lines */
+                font-size: 1.5rem; /* Adjust font size for readability */
+                line-height: 1.2; /* Adjust line height for spacing */
+                text-align: center; /* Center-align text for better presentation */
+            }
+            .navbar-brand h2 span {
+                display: block; /* Display each part of the text on a new line */
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -51,7 +65,7 @@
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <img src="{% static 'img/logofx.png' %}" alt="Mofrey FX Logo" style="height: auto; max-height: 80px; margin-right: 10px;">
-        <h2 class="m-0 text-primary">Mofrey FX </h2>
+        <h2 class="m-0 text-primary"><span>Mofrey Fx</span> <span> Academy</span></h2>
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -222,10 +236,11 @@
                 flex-basis: auto;
             }
             .video-container{
-                display: flex;
-
-                justify-content: center;
+                margin-left: auto;
                 align-items: center;
+            }
+            .video-container{
+                margin: 10px;
             }
         }
         
@@ -287,7 +302,10 @@
 
         </section>
     </div>
-
+<!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
