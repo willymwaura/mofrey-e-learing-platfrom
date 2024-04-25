@@ -73,10 +73,10 @@ def course(request,id):
                 paid_course = paid_courses.last()
 
             # If the user has paid, retrieve the course details
-            course = Course.objects.get(id=paid_course.courseId)
-            questions = Questions.objects.filter(course=id)
-            # Create a list to store each question with its choices
-            questions_with_choices = []
+                course = Course.objects.get(id=paid_course.courseId)
+                questions = Questions.objects.filter(course=id)
+                # Create a list to store each question with its choices
+                questions_with_choices = []
             for question in questions:
                 questions_with_choices.append({
                     'question': question,
