@@ -24,5 +24,7 @@ urlpatterns = [
       path('submit_quiz',views.submit_quiz,name='submit_quiz'),
       path('logout',views.logout,name='logout'),
       path("terms",views.terms,name="terms"),
+      path('module/<int:id>', views.module, name='module'),
+      path('download_certificate',views.download_certificate,name="download_certificate")
 ]
 

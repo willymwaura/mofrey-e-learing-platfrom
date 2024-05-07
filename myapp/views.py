@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render,get_object_or_404,redirect
 import requests
-from myapp.models import Course,PaidCourse,MofreyfxUsers,Payments,Questions
+from myapp.models import Course,PaidCourse,MofreyfxUsers,Payments,Modules,Subtopic,Questions,Marks
 from intasend import APIService
 from django.http import HttpResponse,JsonResponse
 import json
@@ -59,6 +59,7 @@ def allcourses(request):
 def contact(request):
     return render(request, 'contact.html')
 
+from myapp.custom_fuctions import get_module_ids_ordered_by_subtopics_and_date ,give_unclocked_ids_list
 def course(request,id):
     #store course id
     request.session['course_id'] = id
@@ -74,18 +75,33 @@ def course(request,id):
 
             # If the user has paid, retrieve the course details
             course = Course.objects.get(id=paid_course.courseId)
-            questions = Questions.objects.filter(course=id)
-                # Create a list to store each question with its choices
-            questions_with_choices = []
-            for question in questions:
-                    questions_with_choices.append({
-                        'question': question,
-                        'choices': question.get_choices()
-                    })
+            #getting the subtopics of the course 
+            subtopics=Subtopic.objects.filter(course=id).order_by('date')
+            print("fetched subtopics")
 
-            context = {
-                    'questions_with_choices': questions_with_choices,
-                    'course':course
+            course_modules_list=get_module_ids_ordered_by_subtopics_and_date(id)
+            print(course_modules_list)
+            #replace this code with a fuction
+            '''
+            try:
+                latest_mark = Marks.objects.filter(status=True).latest('date')
+                latest_module_id = latest_mark.moduleId
+
+                position = course_modules_list.index(latest_module_id)
+                modules_to_view=position+2
+            except:
+                modules_to_view=1
+            print(modules_to_view)
+            unlocked_module_ids = course_modules_list[:modules_to_view]
+            print(unlocked_module_ids) '''
+            unlocked_module_ids=give_unclocked_ids_list(course_modules_list,user_id)
+            
+            
+
+            context={
+                    'course':course,
+                    'subtopics':subtopics,
+                    'unlocked_module_ids':unlocked_module_ids
                 }
             return render(request, 'course.html', context)
           
@@ -515,7 +531,37 @@ def submit_quiz(request):
 
         # Calculate percentage and failed questions
         percentage = int((score / total_questions) * 100)
+        course_id=request.session.get("course_id")
+        user_id=request.session.get("user_id")
+        module_id=request.session.get("module_id")
+        print("module id is ",module_id)
+        if percentage >= 75:
+            try:
+                # Try to get an existing Marks object with the same userId and moduleId
+                marks_obj = Marks.objects.get(userId=user_id, moduleId=module_id)
+                
+                # If the new percentage is higher, update the marks field
+                if percentage > marks_obj.marks:
+                    marks_obj.marks = percentage
+                    marks_obj.save()
+            except Marks.DoesNotExist:
+                # If no Marks object exists, create a new one
+                Marks.objects.create(userId=user_id, moduleId=module_id, marks=percentage, status=True)
         failed_questions = total_questions - score
+
+        course_modules_list=get_module_ids_ordered_by_subtopics_and_date(course_id)
+        print(course_modules_list)
+        unlocked_module_ids=give_unclocked_ids_list(course_modules_list,user_id)
+        position=course_modules_list.index(module_id)
+        next_position=position+1
+
+        #get the number of elements in course module list
+        number_of_modules=len(course_modules_list)
+        if next_position >= number_of_modules:
+            next_module_id=None
+        else:
+            next_module_id=course_modules_list[next_position]
+
 
         # Prepare response data including questions and quiz results
         response_data = {
@@ -523,7 +569,11 @@ def submit_quiz(request):
             'total_questions': total_questions,
             'percentage': percentage,
             'failed_questions': failed_questions,
-            'answer_details': answer_details
+            'answer_details': answer_details,
+            'module_id':module_id,
+            'next_module_id':next_module_id,
+            'unlocked_module_ids':unlocked_module_ids
+
         }
 
         # Render results.html with response_data
@@ -546,5 +596,104 @@ def logout(request):
     
 def terms(request):
     return render (request,"terms.html")
-  
 
+from myapp.custom_fuctions import get_module_ids_ordered_by_subtopics_and_date
+def module(request,id):
+    request.session['module_id'] = id
+    user_id = request.session.get('user_id')
+    course_id=request.session.get('course_id')
+    if user_id is not None:
+
+    
+        try:
+            course_modules_list=get_module_ids_ordered_by_subtopics_and_date(course_id)
+            print(course_modules_list)
+            unlocked_module_ids=give_unclocked_ids_list(course_modules_list,user_id)
+            if id not in unlocked_module_ids:
+                return JsonResponse({'message': "Cover the unlocked modules first and pass quizzes"})
+
+            else:
+                pass
+            print("module view running")
+            
+            module = Modules.objects.get(id=id)
+            
+            questions = Questions.objects.filter(module=id,course=course_id)
+                # Create a list to store each question with its choices
+            
+            questions_with_choices = []
+            for question in questions:
+                    questions_with_choices.append({
+                        'question': question,
+                        'choices': question.get_choices()
+                    })
+
+            context = {
+                    'questions_with_choices': questions_with_choices,
+                    'module':module
+                }
+            return render(request, 'module.html', context)
+            
+        except :
+            print("module view running")
+            
+            module = Modules.objects.get(id=id)
+            
+            questions = Questions.objects.filter(module=id,course=course_id)
+                # Create a list to store each question with its choices
+            
+           
+
+            context = {
+                   
+                    'module':module
+                }
+            return render(request, 'module.html', context)
+    else:
+        # If user_id is not in session redirect to login
+        return redirect('/login')
+  
+from django.template.loader import render_to_string
+import weasyprint
+def download_certificate(request):
+    #check if user has finished all modules of the course
+    course_id=request.session.get('course_id')
+    user_id=request.session.get('user_id')
+    if user_id is not None:
+        #check if user has finished all modules of the course
+        course_modules_list=get_module_ids_ordered_by_subtopics_and_date(course_id)
+        print(course_modules_list)
+        unlocked_module_ids=give_unclocked_ids_list(course_modules_list)
+        last_course_module_id=unlocked_module_ids[-1]
+        print(last_course_module_id)
+        #get the mark of the last module
+        try:
+            marks = Marks.objects.get(moduleId=last_course_module_id).marks
+        except :
+            marks = None
+
+        if marks is None:
+            return JsonResponse({'message':'finish all modules and pass all quizes to download'})
+        else:
+            pass
+
+
+        
+
+        course=Course.objects.get(id=course_id)
+        course_name=course.course_name
+        loggedin_user=MofreyfxUsers.objects.get(id=user_id)
+        username=loggedin_user.username
+        data={
+            'course_name':course_name,
+            'username':username
+
+        }
+        html_string = render_to_string('certificate.html', data)
+        pdf_file = weasyprint.HTML(string=html_string).write_pdf()
+        
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+        return response
+    else:
+        return redirect("/login")

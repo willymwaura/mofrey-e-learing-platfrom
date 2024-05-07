@@ -1,0 +1,128 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate</title>
+    <!-- Favicon -->
+
+<!-- Favicon -->
+<link rel="icon" href="{% static 'img/favicon.ico' %}">
+
+<!-- Google Web Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+<link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+<link rel="icon" href="{% static 'img/Mofrey-Markets.jpg' %}">
+</head>
+<body>
+    <div class="certificate-container d-flex justify-content-center align-items-center">
+        <div class="certificate">
+            <div class="water-mark-overlay"></div>
+            <div class="certificate-header text-center">
+                <img src="{% static 'img/logofx.png' %}"  class="logo" alt="">
+            </div>
+            <div class="certificate-body">
+                <p class="certificate-title"><strong>MOFREY FX TRADING ACADEMY, LEARN TRADE & EARN</strong></p>
+                <h1>Certificate of Completion</h1>
+                <h2>Course: {{course_name}}</h2>
+                <p class="student-name">{{username}}</p>
+                <div class="certificate-content">
+                    <div class="about-certificate">
+                        <p>Has demonstrated a comprehensive understanding of Forex Simplified during the course conducted by <br> Trainer: Esther Mofrey <br> Mofrey FX Academy CEO: Godfrey Kamoche</p>
+                    </div>
+                    
+                    
+                </div>
+                <div class="certificate-footer text-muted">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p style="color:#181d38;font-size:17px; font-weight:1000;">Trainer: Esther Mofrey</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6"  style="display: flex; font-size:17px;font-weight:1000;">
+                                    <p>Certified by: Mofrey Markets</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .certificate-container {
+            padding: 50px;
+        }
+
+        .certificate {
+            border: 15px solid #06BBCC;
+            padding: 25px;
+            border-radius: 20px; /* Rounded borders */
+            max-width: 1024px; /* Maximum width */
+            width: 100%; /* Responsive width */
+            
+        }
+
+        .certificate-header > .logo {
+            width: 160px;
+            height: 160px;
+        }
+
+        .certificate-title {
+            text-align: center;    
+        }
+
+        .certificate-body {
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 400;
+            font-size: 48px;
+            color: #06BBCC;
+        }
+        .certificate p{
+            color: #181d38;
+        }
+
+        .student-name {
+            font-size: 24px;
+        }
+
+        .certificate-content {
+            margin: 0 auto;
+            max-width: 750px; /* Maximum width */
+            width: 100%; /* Responsive width */
+        }
+
+        .about-certificate {
+            width: 380px;
+            margin: 0 auto;
+        }
+
+        .topic-description {
+            text-align: center;
+        }
+    </style>
+    
+</body>
+</html>

@@ -262,7 +262,9 @@
         </div>
 
         <div class="result-box percentage-tube">
+            
             <div class="tube" data-percent="{{ data.percentage }}">
+               
                 <div class="progress" style="width: {{ data.percentage }}%;">
                     <div class="inner">{{ data.percentage }}%</div>
                 </div>
@@ -282,10 +284,48 @@
         <div class="answer-button">
             
             {{detail.correct_choice}}
+           
             
         </div>
     </div>
     {% endfor %}
+    <div class="question">
+      
+        
+        <div >
+            {% if data.percentage >= 75 %}
+            {% if data.next_module_id != None %}
+                <a href="/module/{{data.next_module_id}}" style="color: #333333; text-decoration: none;">
+                    <p style="margin: 0;">Next Module</p>
+                </a>
+            {% else %}
+                <a href="/download_certificate" style="color: #333333; text-decoration: none;">
+                    <p style="margin: 0;">Download Certificate</p>
+                </a>
+            {% endif %}
+        {% else %}
+                {%if data.next_module_id in data.unlocked_module_ids %}
+                {% if data.next_module_id != None %}
+                <a href="/module/{{data.next_module_id}}" style="color: #333333; text-decoration: none;">
+                    <p style="margin: 0;">Next Module</p>
+                </a>
+            {% else %}
+                <a href="/download_certificate" style="color: #333333; text-decoration: none;">
+                    <p style="margin: 0;">Download Certificate</p>
+                </a>
+            {% endif %}
+
+                {% else %}
+                
+            <a href="/module/{{data.module_id}}" style="text-decoration: none;">
+                <p style="margin: 0;">Repeat Quiz</p>
+            </a>
+            {% endif %}
+        {% endif %}
+        </div>
+    </div>
+
+
 
     
 

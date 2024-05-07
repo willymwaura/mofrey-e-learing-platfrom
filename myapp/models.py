@@ -9,24 +9,24 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class MofreyfxUsers (models.Model):
     email=models.EmailField()
     password=models.CharField(max_length=10)
-    username=models.CharField(max_length=20,default='username')
-    phone=models.CharField(max_length=20,default='0112345678')
+    username=models.CharField(max_length=20)
+    phone=models.CharField(max_length=20)
 
     def __str__(self):
-        return self.email
+        return f'{self.email} :{self.username}'
 
 #course model
 class Course(models.Model):
-    name = models.CharField(max_length=255)
+    course_name = models.CharField(max_length=255)
     image_url = models.URLField(max_length=200)
-    video_url = models.URLField(max_length=200)
-    notes = models.TextField(blank=True)
+    trailer_url = models.URLField(max_length=200)
+    intro_notes = models.TextField(blank=True)
     price = models.FloatField()
     duration=models.FloatField()
     date=models.DateTimeField(default=now,blank=False)
 
     def __str__(self):
-        return self.name
+        return self.course_name
     
 #model for paid courses
 class PaidCourse(models.Model):
@@ -39,7 +39,7 @@ class PaidCourse(models.Model):
     
 
 class Payments(models.Model):
-    email=models.EmailField(default="email@gmail.com")
+    email=models.EmailField()
     courseId = models.IntegerField()
     userId = models.IntegerField()
     amountkes = models.FloatField(default=0.0)
@@ -49,10 +49,39 @@ class Payments(models.Model):
     payment_status = models.CharField(max_length=20,default='initialized')
     payment_method = models.CharField(max_length=20,default='mpesa')
 
+    def __str__(self):
+        return f'{self.userId} :{self.payment_status} :{self.payment_method}'
+
+class Subtopic(models.Model):
+    subtopic= models.CharField(max_length=255)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,default=0)
+    date=models.DateTimeField(default=now,blank=False)
+
+    def __str__(self):
+        return f'{self.course} :{self.subtopic}'
+
+class Modules(models.Model):
+    module_name = models.CharField(max_length=255)
+    thumbnail_url = models.URLField(max_length=200)
+    video_url = models.URLField(max_length=200)
+    module_notes = models.TextField(blank=True)
+    module_number = models.IntegerField()
+    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE,default=0)
+    date=models.DateTimeField(default=now,blank=False)
+    def __str__(self):
+        return f'{self.course} :{self.subtopic} :{self.module_name}'
+
+
+  
+    
+
 class Questions(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,default=0)
+    module = models.ForeignKey(Modules,on_delete=models.CASCADE)
+    question_image_url=models.URLField(default='https://me.com')
     question_text = models.TextField()
-    choice1 = models.CharField(max_length=255)
+    choice1 = models.CharField(max_length=255,blank=True)
     choice2 = models.CharField(max_length=255)
     choice3 = models.CharField(max_length=255,blank=True)
     choice4 = models.CharField(max_length=255,blank=True)
@@ -69,7 +98,20 @@ class Questions(models.Model):
         return choices
 
     def __str__(self):
-        return f'{self.course.name} - {self.question_text}'
+        return f'{self.module} - {self.question_text}' 
+    
+
+class Marks(models.Model):
+    userId = models.IntegerField()
+    moduleId=models.IntegerField()
+    marks=models.IntegerField(default=0)
+    date=models.DateTimeField(default=now,blank=False)
+    status=models.BooleanField(default=False)
+    def __str__(self):
+        return f'{self.userId} :{self.moduleId}'
+
+
+
 
 
 
