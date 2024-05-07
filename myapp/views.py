@@ -653,48 +653,57 @@ def module(request,id):
     else:
         # If user_id is not in session redirect to login
         return redirect('/login')
-  
-from django.template.loader import render_to_string
+    
+    
 import weasyprint
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.template.loader import render_to_string
+from .models import Course, Marks, MofreyfxUsers
+
 def download_certificate(request):
-    #check if user has finished all modules of the course
-    course_id=request.session.get('course_id')
-    user_id=request.session.get('user_id')
-    if user_id is not None:
-        #check if user has finished all modules of the course
-        course_modules_list=get_module_ids_ordered_by_subtopics_and_date(course_id)
-        print(course_modules_list)
-        unlocked_module_ids=give_unclocked_ids_list(course_modules_list)
-        last_course_module_id=unlocked_module_ids[-1]
-        print(last_course_module_id)
-        #get the mark of the last module
-        try:
-            marks = Marks.objects.get(moduleId=last_course_module_id).marks
-        except :
-            marks = None
-
-        if marks is None:
-            return JsonResponse({'message':'finish all modules and pass all quizes to download'})
-        else:
-            pass
-
-
-        
-
-        course=Course.objects.get(id=course_id)
-        course_name=course.course_name
-        loggedin_user=MofreyfxUsers.objects.get(id=user_id)
-        username=loggedin_user.username
-        data={
-            'course_name':course_name,
-            'username':username
-
-        }
-        html_string = render_to_string('certificate.html', data)
-        pdf_file = weasyprint.HTML(string=html_string).write_pdf()
-        
-        response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
-        return response
-    else:
+    # Check if user is logged in
+    user_id = request.session.get('user_id')
+    if user_id is None:
         return redirect("/login")
+
+    # Check if user has finished all modules of the course
+    course_id = request.session.get('course_id')
+    course_modules_list = get_module_ids_ordered_by_subtopics_and_date(course_id)
+    unlocked_module_ids = give_unclocked_ids_list(course_modules_list, user_id)
+    last_course_module_id = unlocked_module_ids[-1]
+
+    try:
+        marks = Marks.objects.get(moduleId=last_course_module_id).marks
+    except Marks.DoesNotExist:
+        marks = None
+
+    if marks is None:
+        return JsonResponse({'message': 'Finish all modules and pass all quizzes to download'})
+
+    # Fetch course and user details
+    course = Course.objects.get(id=course_id)
+    course_name = course.course_name
+    loggedin_user = MofreyfxUsers.objects.get(id=user_id)
+    username = loggedin_user.username
+
+    # Prepare data for rendering certificate template
+    data = {
+        'course_name': course_name,
+        'username': username
+    }
+
+    # Render HTML template to string
+    html_content = render_to_string('certificate.html', data)
+
+    # Generate PDF from HTML content using WeasyPrint
+    pdf_content = generate_pdf(html_content)
+
+    # Return PDF as attachment
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+    return response
+
+def generate_pdf(html_content):
+    # Generate PDF from HTML content using WeasyPrint
+    pdf = weasyprint.HTML(string=html_content).write_pdf()
+    return pdf

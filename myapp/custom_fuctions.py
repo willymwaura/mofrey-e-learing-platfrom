@@ -33,3 +33,4 @@ def give_unclocked_ids_list(course_modules_list,user_id):
         unlocked_module_ids = course_modules_list[:modules_to_view]
         print(unlocked_module_ids)
         return unlocked_module_ids
+    
