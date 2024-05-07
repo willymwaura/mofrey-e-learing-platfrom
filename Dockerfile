@@ -17,7 +17,10 @@ RUN pip install --upgrade setuptools
 RUN pip install gunicorn
 RUN pip install Pillow
 RUN pip install python-dotenv
-RUN apt install weasyprint
+RUN pip install pygobject
+RUN pip install weasyprint
+
+
 
 
 
