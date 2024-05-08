@@ -191,6 +191,8 @@ def create_account(request):
     email = request.POST.get('email', False)
     phone = request.POST.get('phone', False)
     username = request.POST.get('username', False)
+    firstname = request.POST.get('firstname', False)
+    secondname = request.POST.get('secondname', False)
 
 
     if  password1 != password2:
@@ -209,7 +211,7 @@ def create_account(request):
         return render(request, "register.html", {"message": message})
 
         # Create user
-    user = MofreyfxUsers.objects.create(email=email, password=password1,phone=phone,username=username)
+    user = MofreyfxUsers.objects.create(email=email, password=password1,phone=phone,username=username,firstname=firstname,secondname=secondname)
     try:
         
         subject = 'Thank you'

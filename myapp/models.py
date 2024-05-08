@@ -11,6 +11,8 @@ class MofreyfxUsers (models.Model):
     password=models.CharField(max_length=10)
     username=models.CharField(max_length=20)
     phone=models.CharField(max_length=20)
+    firstname=models.CharField(max_length=20,default='firstname')
+    secondname=models.CharField(max_length=20,default='secondname')
 
     def __str__(self):
         return f'{self.email} :{self.username}'

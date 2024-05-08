@@ -24,6 +24,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="icon" href="{% static 'img/Mofrey-Markets.jpg' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Custom Stylesheet -->
     <style>
@@ -136,29 +137,85 @@
 </nav>
 <!-- Navbar End -->
 
+<!-- Custom Stylesheet -->
 <style>
-    .navbar-brand img {
-        height: auto;
-        max-height: 80px; /* Adjust maximum height for responsiveness */
-        margin-right: 10px;
+    body {
+        font-family: 'Heebo', sans-serif;
+        background-color: #f8f9fa;
+    }
+    .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+    .register-form {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        width: 420px;
+        text-align: center;
+    }
+    .register-form input {
+        width: calc(100% - 20px); /* Adjusted width */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        /* Add icons and color */
+        padding-left: 40px; /* Space for icon */
+    }
+    .register-form input#phone {
+        width: calc(100% - 20px); /* Adjusted width */
+        margin-bottom: 15px; /* Increased spacing */
+    }
+    .register-form input::placeholder {
+        color: #adb5bd;
+    }
+    .register-form button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        background-color: #06BBCC;
+        color: #ffffff;
+        cursor: pointer;
+    }
+    .register-form button:hover {
+        background-color: #05a5b5;
+    }
+    .terms-text {
+        font-size: 12px;
+        color: #6c757d;
+    }
+</style>
+<style>
+    .form-group {
+        position: relative;
     }
 
-    @media (max-width: 991.98px) {
-        .navbar-nav {
-            text-align: center; /* Center-align menu items */
-        }
-
-        .navbar-collapse {
-            justify-content: center;
-            position: static; /* Reset position to default */
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-nav .nav-link {
-            margin: 10px 15px; /* Adjust spacing between nav items */
-        }
+    .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
     }
+
+    .password-toggle i {
+        font-size: 18px;
+        color: #888;
+    }
+
+    .password-toggle.active i {
+        color: #333;
+    }
+    .register-form input#phone {
+            width: calc(100% - 20px); /* Adjusted width */
+            margin-bottom: 15px; /* Increased spacing */
+        }
 </style>
     <!-- Navbar End -->
 
@@ -168,22 +225,33 @@
             <h2>Register</h2>
             <form action="/create_account" method="POST">
                 {% csrf_token %}
+              
+              
                 <div class="form-group">
-                    <input type="username" name="username" placeholder="username"  required>
+                    <input type="firstnme" name="firstname" placeholder="Firstname"  required>
                 </div>
-               
+                <div class="form-group">
+                    <input type="secondname" name="secondname" placeholder="Secondname"  required>
+                </div>
+                <div class="form-group">
+                    <input type="username" name="username" placeholder="Username"  required>
+                </div>
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
-                <div class="form-group">
-                    <input type="number" name="phone" placeholder="0712345678"required>
-                </div>
+                <div>
+               
+                <input type="tel" name="phone" placeholder="Phone Number" required style="width: 300px; margin-bottom:30px;">
+            </div>
                
                 <div class="form-group">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <span class="password-toggle"><i class="fas fa-eye"></i></span>
                 </div>
+                
                 <div class="form-group">
-                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                    <span class="password-toggle"><i class="fas fa-eye"></i></span>
                 </div>
                 <button type="submit">Register</button>
                 <div class="form-group">
@@ -210,6 +278,19 @@
     <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
 
+    <!-- Bootstrap JS and Other Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
     <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
@@ -218,6 +299,49 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- International Telephone Input JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<!-- International Telephone Input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    // Initialize the International Telephone Input plugin
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        preferredCountries: ["us", "gb", "de", "fr", "es"] // Specify your preferred countries here
+    });
+</script>
+<script>
+    document.querySelectorAll('.password-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+</script>
+<!-- International Telephone Input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    // Initialize the International Telephone Input plugin
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        preferredCountries: ["us", "gb", "de", "fr", "es"] // Specify your preferred countries here
+    });
+</script>
+
+
+
 
 </body>
 
