@@ -677,7 +677,11 @@ def download_certificate(request):
     last_course_module_id = unlocked_module_ids[-1]
 
     try:
-        marks = Marks.objects.get(moduleId=last_course_module_id).marks
+        try:
+            marks = Marks.objects.get(moduleId=last_course_module_id).marks
+        except:
+            marks = Marks.objects.filter(moduleId=last_course_module_id).latest('date')
+            
     except Marks.DoesNotExist:
         marks = None
 
