@@ -390,7 +390,7 @@ def PaymentCallback(request):
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
                 course_bought=Course.objects.get(id=course_id)
                 email=MofreyfxUsers.objects.get(id=user_id).email
-                subject = f"Thank you for buying {course_bought.name}"
+                subject = f"Thank you for buying {course_bought.course_name}"
             
                 # Construct the message body with the course link
                 message = f'''To view your purchased   courses, click the link below:
