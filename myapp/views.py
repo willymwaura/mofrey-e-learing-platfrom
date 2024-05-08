@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from dict import settings
 import logging
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 
@@ -256,6 +258,7 @@ def auth_login(request):
         # If everything is correct, respond with user details
     # Store the user ID in the session
     request.session['user_id'] = user.id
+    print(user.id)
     return redirect('index')
 
 def mpesa_checkout(request):
@@ -327,8 +330,9 @@ def CardPayments(request):
 
         
         try:
-            publishable_key = "ISPubKey_live_ee33ed45-3f7e-46ce-a6a4-d91fae6de1de"
-            service = APIService(token="ISSecretKey_live_0bcbeaa2-f210-476b-9bfa-28fae2ee5c0a", publishable_key=publishable_key, test=False)
+            publishable_key = os.getenv(publishable_key)
+            token=os.getenv(token)
+            service = APIService(token=token, publishable_key=publishable_key, test=False)
 
             response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
             url=response.get("url")
@@ -654,7 +658,7 @@ def module(request,id):
         # If user_id is not in session redirect to login
         return redirect('/login')
     
-    
+
 import weasyprint
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
