@@ -330,12 +330,15 @@ def CardPayments(request):
 
         
         try:
-            publishable_key = os.getenv(publishable_key)
-            token=os.getenv(token)
+            publishable_key = "ISPubKey_live_ee33ed45-3f7e-46ce-a6a4-d91fae6de1de"
+            print(publishable_key)
+            token="ISSecretKey_live_0bcbeaa2-f210-476b-9bfa-28fae2ee5c0a"
+            print(token)
             service = APIService(token=token, publishable_key=publishable_key, test=False)
 
             response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
             url=response.get("url")
+            print(url)
             
             return redirect(url)
 
