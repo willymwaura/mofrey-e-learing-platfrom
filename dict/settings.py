@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-63q9h(znz#1e)m&74w9#_n5nakdb!qx*fqhfi=&k7e3bwmaia$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mofrey.up.railway.app','127.0.0.1','mofrey-e-learing-platfrom-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS=['https://mofrey.up.railway.app','https://127.0.0.1','https://mofrey-e-learing-platfrom-production.up.railway.app']
+ALLOWED_HOSTS = ['mofrey.up.railway.app','127.0.0.1','mofrey-e-learing-platfrom-production.up.railway.app','mofreydigiversity.com']
+CSRF_TRUSTED_ORIGINS=['https://mofrey.up.railway.app','https://127.0.0.1','https://mofrey-e-learing-platfrom-production.up.railway.app','https://mofreydigiversity.com']
 
 
 # Application definition
