@@ -730,3 +730,6 @@ def generate_pdf(html_content):
     # Generate PDF from HTML content using WeasyPrint
     pdf = weasyprint.HTML(string=html_content).write_pdf()
     return pdf
+
+def faqs(request):
+    return render(request,'faqs.html')
