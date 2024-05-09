@@ -620,7 +620,7 @@ def module(request,id):
             print(course_modules_list)
             unlocked_module_ids=give_unclocked_ids_list(course_modules_list,user_id)
             if id not in unlocked_module_ids:
-                return JsonResponse({'message': "Cover the unlocked modules first and pass quizzes"})
+                return render(request,"module_error.html")
 
             else:
                 pass
@@ -683,15 +683,15 @@ def download_certificate(request):
 
     try:
         try:
-            marks = Marks.objects.get(moduleId=last_course_module_id).marks
+            marks = Marks.objects.get(moduleId=last_course_module_id,userId=user_id).marks
         except:
-            marks = Marks.objects.filter(moduleId=last_course_module_id).latest('date')
+            marks = Marks.objects.filter(moduleId=last_course_module_id,userId=user_id).latest('date')
             
     except Marks.DoesNotExist:
         marks = None
 
     if marks is None:
-        return JsonResponse({'message': 'Finish all modules and pass all quizzes to download'})
+        return render(request,"cert_error.html")
 
     # Fetch course and user details
     course = Course.objects.get(id=course_id)
