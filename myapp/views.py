@@ -223,8 +223,12 @@ def create_account(request):
         from_email = settings.EMAIL_HOST_USER   
         recipient_list = [email]
         print("sending email")
-        send_mail(subject, message, from_email, recipient_list)
-        return redirect("/login")
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+            return redirect("/login")
+        except:
+            return redirect("/login")
+    
     except Exception as e:
         logging.error(f"Failed to send email. Error message: {str(e)}")
         return redirect("/register")
@@ -400,8 +404,11 @@ def PaymentCallback(request):
                 from_email = settings.EMAIL_HOST_USER   
                 recipient_list = [email]
                 print("sending email")
-                send_mail(subject, message, from_email, recipient_list)
-                return JsonResponse({'message':'mpesa payment complete'})
+                try:
+                    send_mail(subject, message, from_email, recipient_list)
+                    return JsonResponse({'message':'mpesa payment complete'})
+                except:
+                    return JsonResponse({'message':'mpesa payment complete'})
                 
 
             except Payments.DoesNotExist:
@@ -430,8 +437,11 @@ def PaymentCallback(request):
                 from_email = settings.EMAIL_HOST_USER   
                 recipient_list = [email]
                 print("sending email")
-                send_mail(subject, message, from_email, recipient_list)
-                return JsonResponse({'message':'mpesa payment complete'})
+                try:
+                    send_mail(subject, message, from_email, recipient_list)
+                    return JsonResponse({'message':'mpesa payment complete'})
+                except:
+                    return JsonResponse({'message':'mpesa payment complete'})
                 
 
             except Payments.DoesNotExist:
