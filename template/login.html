@@ -168,6 +168,32 @@
         }
     }
 </style>
+<style>
+    .form-group {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    .password-toggle i {
+        font-size: 18px;
+        color: #888;
+    }
+
+    .password-toggle.active i {
+        color: #333;
+    }
+    .register-form input#phone {
+            width: calc(100% - 20px); /* Adjusted width */
+            margin-bottom: 15px; /* Increased spacing */
+        }
+        </style>
     <!-- Navbar End -->
 
     <!-- Login Form Section -->
@@ -176,8 +202,17 @@
             <h2>Login</h2>
             <form action="/auth_login" method="POST">
                 {% csrf_token %}
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
+                <div>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+               
+               
+                <div class="form-group">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <span class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                </div>
+
                 
                 <button type="submit">Login</button>
 
@@ -203,6 +238,41 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(function(toggle) {
+            const input = toggle.previousElementSibling;
+            const icon = toggle.querySelector('i');
+    
+            // Function to toggle the eye icon based on the password field's value
+            function toggleEyeIcon() {
+                if (input.type === 'password' && input.value !== '') {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+    
+            // Initially hide the password and display the eye icon crossed if the password field is not empty
+            toggleEyeIcon();
+    
+            toggle.addEventListener('click', function() {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+    
+            // Listen for changes in the password field's value
+            input.addEventListener('input', toggleEyeIcon);
+        });
+    </script>
     <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

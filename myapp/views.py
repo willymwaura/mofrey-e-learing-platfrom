@@ -18,7 +18,7 @@ load_dotenv()
 # Create your views here.
 from django.shortcuts import render
 def index(request):
-    courses = Course.objects.all()
+    courses = Course.objects.all().order_by('id')
     courses = courses[:4]
     user_id = request.session.get('user_id')
     if user_id is not None:
