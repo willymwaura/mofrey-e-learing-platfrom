@@ -218,7 +218,7 @@ def create_account(request):
         message = '''Thank you for signing up,
             Your Account is now active,
             To login, use:
-            https://mofrey.up.railway.app.'''
+            https://mofreydigiversity.com '''
   
         from_email = settings.EMAIL_HOST_USER   
         recipient_list = [email]
@@ -399,7 +399,7 @@ def PaymentCallback(request):
                 # Construct the message body with the course link
                 message = f'''To view your purchased   courses, click the link below:
                 
-        https://mofrey.up.railway.app/allcourses'''
+        https://mofreydigiversity.com/allcourses'''
         
                 from_email = settings.EMAIL_HOST_USER   
                 recipient_list = [email]
@@ -427,12 +427,12 @@ def PaymentCallback(request):
 
                 paid_course_instance = PaidCourse.objects.create(userId=user_id, courseId=course_id)
                 course_bought=Course.objects.get(id=course_id)
-                subject = f"Thank you for purchasing {course_bought.name}"
+                subject = f"Thank you for purchasing {course_bought.course_name}"
             
                 # Construct the message body with the course link
                 message = f'''To view your purchased   courses, click the link below:
                     
-            https://mofrey.up.railway.app/allcourses/'''
+            https://mofreydigiversity.com/allcourses/'''
         
                 from_email = settings.EMAIL_HOST_USER   
                 recipient_list = [email]
@@ -489,7 +489,7 @@ def reset_password(request):
         subject = 'Your password'
         message = '''Your password is {}.
         You can login now to Mofrey Markets.
-        URL: https://mofrey.up.railway.app/login.'''.format(password) 
+        URL: https://mofreydigiversity.com/login.'''.format(password) 
         from_email = settings.EMAIL_HOST_USER   
         recipient_list = [email]
         print("sending email")
