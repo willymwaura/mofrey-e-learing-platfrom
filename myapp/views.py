@@ -401,7 +401,7 @@ def PaymentCallback(request):
                 
         https://mofreydigiversity.com/allcourses'''
         
-                from_email = settings.EMAIL_HOST_USER   
+                from_email = settings.EMAIL_HOST_USER
                 recipient_list = [email]
                 print("sending email")
                 try:

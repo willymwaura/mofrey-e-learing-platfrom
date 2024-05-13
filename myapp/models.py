@@ -8,9 +8,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 #users model
 class MofreyfxUsers (models.Model):
     email=models.EmailField()
-    password=models.CharField(max_length=10)
-    username=models.CharField(max_length=20)
-    phone=models.CharField(max_length=20)
+    password=password = models.TextField() 
+    username=models.CharField(max_length=30)
+    phone=models.CharField(max_length=30)
     firstname=models.CharField(max_length=20,default='firstname')
     secondname=models.CharField(max_length=20,default='secondname')
 
