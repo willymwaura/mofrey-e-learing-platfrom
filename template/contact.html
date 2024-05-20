@@ -172,30 +172,31 @@
                         tabindex="0"></iframe>
                 </div>
                 <div class="col-lg-4 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <form>
+                    <form action="/booking" method="post">
+                        {% csrf_token %} 
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" required>
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-control" id="class_booking" placeholder="Select Your Class Booking">
+                                    <select class="form-control" name="classbooked" id="classbooked" placeholder="Select Your Class Booking" required>
                                         <option value=""></option>
-                                        <option value="Class A">Class Of January</option>
-                                        <option value="Class B">Class Of Februaury</option>
-                                        <option value="Class C">Class Of March</option>
-                                        <option value="Class D">Class Of April</option>
-                                        <option value="Class E">Class Of May</option>
-                                        <option value="Class E">Class Of June</option>
-                                        <option value="Class E">Class Of July</option>
-                                        <option value="Class E">Class Of August</option>
-                                        <option value="Class E">Class Of September</option>
-                                        <option value="Class E">Class Of October</option>
-                                        <option value="Class E">Class Of November</option>
-                                        <option value="Class E">Class Of December</option>
+                                        <option value="Class Of January">Class Of January</option>
+                                        <option value="Class Of Februaury">Class Of Februaury</option>
+                                        <option value="Class Of March">Class Of March</option>
+                                        <option value="Class Of April">Class Of April</option>
+                                        <option value="Class Of May">Class Of May</option>
+                                        <option value="Class Of June">Class Of June</option>
+                                        <option value="Class Of July">Class Of July</option>
+                                        <option value="Class Of August">Class Of August</option>
+                                        <option value="Class Of September">Class Of September</option>
+                                        <option value="Class Of October">Class Of October</option>
+                                        <option value="Class Of November">Class Of November</option>
+                                        <option value="Class Of December">Class Of December</option>
                                     </select>
                                     <label for="class_booking">Your Class Booking</label>
                                 </div>
@@ -203,18 +204,18 @@
                             
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="phone" placeholder="number">
+                                    <input type="number" class="form-control" name="phone" id="phone" placeholder="number" required>
                                     <label for="subject">Your Whatsapp Phone Number</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
+                                    <textarea class="form-control" name='message' placeholder="Leave a message here" id="message" style="height: 150px" required></textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                <button class="btn btn-primary w-100 py-3" id="submitBtn" type="submit">Send Message</button>
                             </div>
                         </div>
                     </form>
@@ -300,6 +301,7 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+  
 </body>
 
 </html>

@@ -494,6 +494,7 @@ def reset_password(request):
         recipient_list = [email]
         print("sending email")
         send_mail(subject, message, from_email, recipient_list)
+        print('email sent ')
         message="your password has been sent to your email"
         return render(request,"forgot_password.html",{"message":message})
     except Exception as e:
@@ -733,3 +734,58 @@ def generate_pdf(html_content):
 
 def faqs(request):
     return render(request,'faqs.html')
+
+def booking (request):
+    phone = request.POST.get('phone',False)
+    classbooked = request.POST.get('classbooked',False)
+    name = request.POST.get('name',False)
+    message = request.POST.get('message',False)
+
+
+    tel_no = str(phone).strip() # convert to string and remove whitespace characters
+    tel_no = int(float(tel_no)) #
+    tel_no = "254{}".format(tel_no)
+    print(tel_no)
+
+
+    # Create the payload
+    payload = {
+         "userid": "Willy",
+        "password": "GX98BFfh",
+        "senderid": "KINYATHENA",
+        "msgType": "text",
+        "duplicatecheck": "true",
+        "sendMethod": "quick",
+        "sms": [
+            {
+                "mobile": [tel_no],
+                "msg": f"Dear {name},\n\nThank you for booking {classbooked}.\n\nYou shall be contacted shortly."
+            },
+            {
+                "mobile": ["254115721877"],
+                "msg": f"{name} booked {classbooked}.\n\nPhone: {phone}\nMessage: {message}"
+            }
+        ]
+    }
+
+    json_payload = json.dumps(payload)
+    print(json_payload)
+
+    url = 'https://portal.zettatel.com/SMSApi/send'
+
+    try:
+        response = requests.post(url, headers={'Content-Type': 'application/json'}, data=json_payload)
+        if response.ok:
+            print("SMS sent successfully.")
+            return redirect('/contact')
+        else:
+            print(f"Failed to send SMS. Response status code: {response.status_code}")
+            return redirect('/contact')
+    except Exception as e:
+        print(f"Error sending SMS: {e}")
+        return redirect('/contact')
+    
+    
+
+
+
