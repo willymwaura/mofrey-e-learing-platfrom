@@ -292,8 +292,8 @@ def mpesa_checkout(request):
 
         try:
                 # Initialize the APIService
-            token = "ISSecretKey_live_95fe3dac-af19-4d87-aacc-4aa6f2b3eafd"
-            publishable_key = "ISPubKey_live_0331dc17-d0ed-495d-a337-5d008bf9eb6d"
+            token =os.getenv('token')
+            publishable_key = os.getenv('publishable_key')
             service = APIService(token=token, publishable_key=publishable_key, test=False)
 
                 # Trigger M-Pesa STK Push
@@ -336,13 +336,13 @@ def CardPayments(request):
 
         
         try:
-            publishable_key = "ISPubKey_live_0331dc17-d0ed-495d-a337-5d008bf9eb6d"
-            print(publishable_key)
-            token = "ISSecretKey_live_95fe3dac-af19-4d87-aacc-4aa6f2b3eafd"
-            print(token)
+            publishable_key = os.getenv('publishable_key')
+            
+            token = os.getenv('token')
+            
             service = APIService(token=token, publishable_key=publishable_key, test=False)
 
-            response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="http://example.com/thank-you")
+            response = service.collect.checkout(email=email, amount=amountusd, currency="USD", comment="Service Fees", redirect_url="https://mofreydigiversity.com/loading")
             url=response.get("url")
             print(url)
             
@@ -755,4 +755,7 @@ def booking (request):
     except Exception as e:
         print('An error occurred: {e}')
         return redirect('/index')
+    
+def loading(request):
+    return render (request,"loading.html")
 

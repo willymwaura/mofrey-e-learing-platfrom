@@ -27,7 +27,8 @@ urlpatterns = [
       path('module/<int:id>', views.module, name='module'),
       path('download_certificate',views.download_certificate,name="download_certificate"),
       path('faqs',views.faqs,name='faqs'),
-      path('booking',views.booking,name='booking',)
+      path('booking',views.booking,name='booking'),
+      path('loading',views.loading,name='loading'),
   
 ]
 
