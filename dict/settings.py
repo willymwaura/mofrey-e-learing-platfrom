@@ -149,14 +149,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'mentorship@mofreyfx.com'
 EMAIL_HOST_PASSWORD = 'Admin@1993men'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER 
-'''
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'remotejobssoftwarecompany@gmail.com'
-EMAIL_HOST_PASSWORD="chzdtgtxfgkfjild"  '''
 
 
 

@@ -292,8 +292,8 @@ def mpesa_checkout(request):
 
         try:
                 # Initialize the APIService
-            token = "ISSecretKey_live_0bcbeaa2-f210-476b-9bfa-28fae2ee5c0a"
-            publishable_key = "ISPubKey_live_ee33ed45-3f7e-46ce-a6a4-d91fae6de1de"
+            token = "ISSecretKey_live_95fe3dac-af19-4d87-aacc-4aa6f2b3eafd"
+            publishable_key = "ISPubKey_live_0331dc17-d0ed-495d-a337-5d008bf9eb6d"
             service = APIService(token=token, publishable_key=publishable_key, test=False)
 
                 # Trigger M-Pesa STK Push
@@ -336,9 +336,9 @@ def CardPayments(request):
 
         
         try:
-            publishable_key = "ISPubKey_live_ee33ed45-3f7e-46ce-a6a4-d91fae6de1de"
+            publishable_key = "ISPubKey_live_0331dc17-d0ed-495d-a337-5d008bf9eb6d"
             print(publishable_key)
-            token="ISSecretKey_live_0bcbeaa2-f210-476b-9bfa-28fae2ee5c0a"
+            token = "ISSecretKey_live_95fe3dac-af19-4d87-aacc-4aa6f2b3eafd"
             print(token)
             service = APIService(token=token, publishable_key=publishable_key, test=False)
 
@@ -740,52 +740,19 @@ def booking (request):
     classbooked = request.POST.get('classbooked',False)
     name = request.POST.get('name',False)
     message = request.POST.get('message',False)
-
-
-    tel_no = str(phone).strip() # convert to string and remove whitespace characters
-    tel_no = int(float(tel_no)) #
-    tel_no = "254{}".format(tel_no)
-    print(tel_no)
-
-
-    # Create the payload
-    payload = {
-         "userid": "Willy",
-        "password": "GX98BFfh",
-        "senderid": "KINYATHENA",
-        "msgType": "text",
-        "duplicatecheck": "true",
-        "sendMethod": "quick",
-        "sms": [
-            {
-                "mobile": [tel_no],
-                "msg": f"Dear {name},\n\nThank you for booking {classbooked}.\n\nYou shall be contacted shortly."
-            },
-            {
-                "mobile": ["254115721877"],
-                "msg": f"{name} booked {classbooked}.\n\nPhone: {phone}\nMessage: {message}"
-            }
-        ]
-    }
-
-    json_payload = json.dumps(payload)
-    print(json_payload)
-
-    url = 'https://portal.zettatel.com/SMSApi/send'
+    sender=settings.EMAIL_HOST_USER
+    recipients = [settings.EMAIL_HOST_USER]
+    subject="Thank you for booking "  + classbooked
+    print(subject)
+    message=f'{name} booked {classbooked}.\n\nPhone: {phone}\nMessage: {message}'
+    
+    
 
     try:
-        response = requests.post(url, headers={'Content-Type': 'application/json'}, data=json_payload)
-        if response.ok:
-            print("SMS sent successfully.")
-            return redirect('/contact')
-        else:
-            print(f"Failed to send SMS. Response status code: {response.status_code}")
-            return redirect('/contact')
+        send_mail(subject, message, sender, recipients)
+        print('Your message has been sent successfully.')
+        return redirect('/index')  # Redirect to a success page or some other page
     except Exception as e:
-        print(f"Error sending SMS: {e}")
-        return redirect('/contact')
-    
-    
-
-
+        print('An error occurred: {e}')
+        return redirect('/index')
 
