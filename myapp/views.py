@@ -750,6 +750,10 @@ def booking (request):
 
     try:
         send_mail(subject, message, sender, recipients)
+        print(subject)
+        print(sender)
+        print(message)
+        print(recipients)
         print('Your message has been sent successfully.')
         return redirect('/index')  # Redirect to a success page or some other page
     except Exception as e:
