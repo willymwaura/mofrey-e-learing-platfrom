@@ -741,7 +741,7 @@ def booking (request):
     name = request.POST.get('name',False)
     message = request.POST.get('message',False)
     sender=settings.EMAIL_HOST_USER
-    recipients = [settings.EMAIL_HOST_USER]
+    recipients = ['admin@mofreyfx.com']
     subject="Thank you for booking "  + classbooked
     print(subject)
     message=f'{name} booked {classbooked}.\n\nPhone: {phone}\nMessage: {message}'
@@ -749,10 +749,6 @@ def booking (request):
     
 
     try:
-        print(subject)
-        print(sender)
-        print(message)
-        print(recipients)
         send_mail(subject, message, sender, recipients)
 
         print('Your message has been sent successfully.')
