@@ -741,7 +741,7 @@ def booking (request):
     name = request.POST.get('name',False)
     message = request.POST.get('message',False)
     sender=settings.EMAIL_HOST_USER
-    recipients = ['admin@mofreyfx.com']
+    recipients = ['mentorship@mofreyfx.com']
     subject="Thank you for booking "  + classbooked
     print(subject)
     message=f'{name} booked {classbooked}.\n\nPhone: {phone}\nMessage: {message}'
