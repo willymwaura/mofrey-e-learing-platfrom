@@ -313,7 +313,7 @@
         <section class="text-quiz-section">
             <h2>About the Course</h2>
             <p>
-                {{course.intro_notes}}
+                {{course.course_description}}
             </p>
             
             <!-- Download Certificate Button -->
@@ -341,7 +341,7 @@
                
                 <div class="row">
                     <!-- First Video -->
-                    {% for module in subtopic.modules_set.all %}
+                    {% for module in subtopic.episodes_set.all %}
                     
                     
 
@@ -360,8 +360,8 @@
                         </div>
                         </div>
                         <div class="course-info" style="display: flex; justify-content:space-around; font-size:5px;">
-                            <p style="font-weight: bold;">{{subtopic.id}}.{{module.module_number}} &nbsp;</p>
-                            <p style="font-weight: bold;">{{module.module_name}}</p>
+                            <p style="font-weight: bold;">Esp {{module.episode_number}} &nbsp;</p>
+                            <p style="font-weight: bold;">{{module.episode_name}}</p>
                         
                             <!-- Video, Course Name, and Course Number -->
                         </div>

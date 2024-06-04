@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render,get_object_or_404,redirect
 import requests
-from myapp.models import Course,PaidCourse,MofreyfxUsers,Payments,Modules,Subtopic,Questions,Marks
+from myapp.models import Course,PaidCourse,MofreyfxUsers,Payments,Episodes,Subtopic,Questions,Marks
 from intasend import APIService
 from django.http import HttpResponse,JsonResponse
 import json
@@ -637,7 +637,7 @@ def module(request,id):
                 pass
             print("module view running")
             
-            module = Modules.objects.get(id=id)
+            module = Episodes.objects.get(id=id)
             
             questions = Questions.objects.filter(module=id,course=course_id)
                 # Create a list to store each question with its choices
@@ -658,7 +658,7 @@ def module(request,id):
         except :
             print("module view running")
             
-            module = Modules.objects.get(id=id)
+            module = Episodes.objects.get(id=id)
             
             questions = Questions.objects.filter(module=id,course=course_id)
                 # Create a list to store each question with its choices

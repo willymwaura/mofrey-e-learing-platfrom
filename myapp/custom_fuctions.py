@@ -1,4 +1,4 @@
-from .models import Course, Subtopic, Modules,Marks
+from .models import Course, Subtopic, Episodes,Marks
 
 def get_module_ids_ordered_by_subtopics_and_date(course_id):
     # Get the subtopics associated with the course
@@ -10,7 +10,7 @@ def get_module_ids_ordered_by_subtopics_and_date(course_id):
     # Iterate through subtopics
     for subtopic in subtopics:
         # Get modules associated with the current subtopic
-        modules = Modules.objects.filter(subtopic=subtopic.id).order_by('date')
+        modules = Episodes.objects.filter(subtopic=subtopic.id).order_by('date')
         # Add module IDs to the list
         module_ids.extend(modules.values_list('id', flat=True))
 

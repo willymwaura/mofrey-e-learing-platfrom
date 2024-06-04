@@ -22,7 +22,7 @@ class Course(models.Model):
     course_name = models.CharField(max_length=255)
     image_url = models.URLField(max_length=200)
     trailer_url = models.URLField(max_length=200)
-    intro_notes = models.TextField(blank=True)
+    course_description = models.TextField(blank=True)
     price = models.FloatField()
     duration=models.FloatField()
     date=models.DateTimeField(default=now,blank=False)
@@ -62,17 +62,17 @@ class Subtopic(models.Model):
     def __str__(self):
         return f'{self.course} :{self.subtopic}'
 
-class Modules(models.Model):
-    module_name = models.CharField(max_length=255)
+class Episodes(models.Model):
+    episode_name = models.CharField(max_length=255)
     thumbnail_url = models.URLField(max_length=200)
     video_url = models.URLField(max_length=200)
-    module_notes = models.TextField(blank=True)
-    module_number = models.IntegerField()
+    episode_notes = models.TextField(blank=True)
+    episode_number = models.IntegerField()
     course = models.ForeignKey(Course,on_delete=models.CASCADE)
     subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE,default=0)
     date=models.DateTimeField(default=now,blank=False)
     def __str__(self):
-        return f'{self.course} :{self.subtopic} :{self.module_name}'
+        return f'{self.course} :{self.subtopic} :{self.episode_name}'
 
 
   
@@ -80,8 +80,8 @@ class Modules(models.Model):
 
 class Questions(models.Model):
     course = models.ForeignKey(Course,on_delete=models.CASCADE,default=0)
-    module = models.ForeignKey(Modules,on_delete=models.CASCADE)
-    question_image_url=models.URLField(default='https://me.com')
+    module = models.ForeignKey(Episodes,on_delete=models.CASCADE)
+    question_image_url=models.URLField(blank=True)
     question_text = models.TextField()
     choice1 = models.CharField(max_length=255,blank=True)
     choice2 = models.CharField(max_length=255)

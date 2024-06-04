@@ -252,7 +252,7 @@
 <body>
  
     <header>
-        <h1>{{ module.module_name }}</h1>
+        <h1>{{ module.episode_name }}</h1>
     </header>
 
     <!-- Course Content -->
@@ -290,7 +290,7 @@
         <section class="text-quiz-section">
             <h2>About the Course</h2>
             <p>
-                {{ module.module_notes }}
+                {{ module.episode_notes }}
             </p>
 
             <!-- Quiz Section -->
@@ -301,7 +301,7 @@
                     {% csrf_token %}
                     {% for entry in questions_with_choices %}
                     <div class="question">
-                        {% if entry.question.question_image_url != "https://me.com" and entry.question.question_image_url %}
+                        {% if entry.question.question_image_url != None and entry.question.question_image_url %}
                             <img src="{{entry.question.question_image_url}}" height="auto">
                             {% endif %}
                         <p>{{ entry.question.question_text }}</p>
