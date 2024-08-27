@@ -185,9 +185,9 @@
 
         /* Quiz Section Styles */
         .quiz-section {
-            background-color: #fff;
+           
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+           
             padding: 20px;
         }
 
@@ -294,30 +294,23 @@
             </p>
 
             <!-- Quiz Section -->
-                        {% if questions_with_choices %}
+                       
             <div class="quiz-section">
-                <h2>Quiz</h2>
-                <form action="/submit_quiz" method="post">
-                    {% csrf_token %}
-                    {% for entry in questions_with_choices %}
-                    <div class="question">
-                        {% if entry.question.question_image_url != None and entry.question.question_image_url %}
-                            <img src="{{entry.question.question_image_url}}" height="auto">
-                            {% endif %}
-                        <p>{{ entry.question.question_text }}</p>
-                        <input type="hidden" name="question_{{ entry.question.id }}_answer" value="{{ entry.question.correct_answer }}">
-                        {% for choice in entry.choices %}
-                        <label>
-                            <input type="radio" name="question_{{ entry.question.id }}_choice" value="{{ forloop.counter }}">
-                            {{ choice }}
-                        </label>
-                        {% endfor %}
-                    </div>
-                    {% endfor %}
-                    <button type="submit">Submit Answers</button>
-                </form>
-            </div>
+                {% if next_module_id != None %}
+                <button style="width: 100px; height: 50px; background-color: #05a5b5; color: white; border: none;">
+                    <a href="/module/{{next_module_id}}" style="color: white; text-decoration: none;">
+                        <p style="margin: 0; padding: 0;">Next </p>
+                    </a>
+                </button>
+            {% else %}
+                <button style="width: 100px; height: 50px; background-color: #05a5b5; color: white; border: none;">
+                    <p style="margin: 0; padding: 0;">END </p>
+                </button>
             {% endif %}
+            
+            
+            </div>
+          
 
         </section>
     </div>

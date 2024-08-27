@@ -629,29 +629,29 @@ def module(request,id):
         try:
             course_modules_list=get_module_ids_ordered_by_subtopics_and_date(course_id)
             print(course_modules_list)
-            unlocked_module_ids=give_unclocked_ids_list(course_modules_list,user_id)
-            if id not in unlocked_module_ids:
-                return render(request,"module_error.html")
+            
+            
+            position=course_modules_list.index(id)
+            next_position=position+1
 
+            #get the number of elements in course module list
+            number_of_modules=len(course_modules_list)
+            if next_position >= number_of_modules:
+                next_module_id=None
             else:
-                pass
+                next_module_id=course_modules_list[next_position]
+            
+            
             print("module view running")
             
             module = Episodes.objects.get(id=id)
             
-            questions = Questions.objects.filter(module=id,course=course_id)
-                # Create a list to store each question with its choices
-            
-            questions_with_choices = []
-            for question in questions:
-                    questions_with_choices.append({
-                        'question': question,
-                        'choices': question.get_choices()
-                    })
 
             context = {
-                    'questions_with_choices': questions_with_choices,
-                    'module':module
+                    
+                    'module':module,
+                    'module_id':id,
+                    'next_module_id':next_module_id,
                 }
             return render(request, 'module.html', context)
             
@@ -660,11 +660,6 @@ def module(request,id):
             
             module = Episodes.objects.get(id=id)
             
-            questions = Questions.objects.filter(module=id,course=course_id)
-                # Create a list to store each question with its choices
-            
-           
-
             context = {
                    
                     'module':module

@@ -316,11 +316,11 @@
                 {{course.course_description}}
             </p>
             
-            <!-- Download Certificate Button -->
+            <!-- Download Certificate
             <div class="text-center mt-4">
                 <a href="/download_certificate"><button class="btn btn-primary btn-download-certificate" style="width: 30%;">Download Certificate</button></a>
             </div>
-            <!-- Quiz Section -->
+            -->
                       
             
           
@@ -350,14 +350,7 @@
                         <div class="video-container">
                             <img class="video-js vjs-big-play-centered" src="{{ module.thumbnail_url }}" style="width: 100%; height: auto;" alt="Thumbnail Image">
                              <!-- Overlay -->
-                        <div class="overlay d-flex align-items-center justify-content-center">
-                           
-                                    {% if module.id in unlocked_module_ids %}
-                                    
-                                {% else %}
-                                    <i  class="fas fa-lock" style="color: green; size: 100px;overlay: 10px;"></i>
-                                {% endif %}
-                        </div>
+                       
                         </div>
                         <div class="course-info" style="display: flex; justify-content:space-around; font-size:5px;">
                             <p style="font-weight: bold;">Esp {{module.episode_number}} &nbsp;</p>
